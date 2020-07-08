@@ -1,0 +1,107 @@
+<%- include("partials/header"); %> 
+
+        <div class="heading text-right">
+            <h1>Saraz Creations</h1>
+            <h3>Where memories are crafted</h3>
+            <a href="#products">
+                <form action="/" method="post"></form>
+            <button type="button" class="btn btn-dark">Buy products<i class="px-1 fas fa-shopping-cart"></i></button></a>
+        </div>
+        
+    <h4 class="credits">
+Photo by Sarah Dorweiler on Unsplash
+    </h4> 
+      
+        </section>
+
+        <section id="about" class="container-fluid p-0">
+
+            <div id="row-about" class="text-center">
+                <h4 class="my-4">
+                    Surprise your friends with a special handmade gift.
+                </h4>
+                
+                <h4 class="my-4">
+                    From explosion box to various kinds of handmade gifts.
+                </h4>
+
+                <h3 class="py-5">
+                    <i class="far fa-check-circle"></i>
+                    Exceptional and beyond expectation
+                </h3>
+
+
+
+                <a href="#products"><button type="button" class="btn btn-outline-light">Buy products<i class="px-1 fas fa-shopping-bag"></i></button></a>
+
+            </div>
+            <div id="row-icons" class="row m-0 text-center">
+                <div class="col-md-4 p-0">
+                    <i class="pt-3 fas fa-user fa-3x"></i>
+                    <h1 class="pt-3">150</h1>
+                    <h3 class="p-2">Happy customers</h3>
+                </div>
+                <div class="col-md-4 p-0">
+                    <i class="pt-3 fas fa-box-open fa-3x"></i>
+                    <h1 class="pt-3">160</h1>
+                    <h3 class="p-2">Products</h3>
+                </div>
+                <div class="col-md-4 p-0">
+                    <i class="pt-3 fas fa-users fa-3x"></i>
+                    <h1 class="pt-3">3</h1>
+                    <h3 class="p-2">in 4 recommend to their friends</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="">
+
+            <div class="container-fluid">
+          <h2 class="my-4 text-center section-title">Products</h2>
+          <div class="underline"></div>
+                </div>
+
+
+          <div class="container-fluid px-1">
+
+            <div class="mt-5 d-flex flex-wrap justify-content-around">
+
+
+<% productDetails.forEach(product => { %>
+
+  <div class="card rounded-lg review m-2" style="width:400px">
+  <div class="img-hover-zoom">
+        <img class="card-img-top post-image" src="<%=product.images[0]%> " alt="image">
+    </div>
+  <!-- <div class="card-img-overlay">
+      <i class="far fa-heart fa-2x" style="color: var(--pink);"></i>
+  </div> -->
+  <div class="card-body">
+      <div class="row p-0">
+          <div class="col-sm-8">
+              <h4 class="card-title"><%=product.title%></h4>
+            </div>
+            <!-- <div class="col-sm-4">
+                <h4 id="cost1">&#8377</h4>
+            </div> -->
+        </div>
+    <!-- <p class="card-text">Some example text.</p> -->
+    <form action="/" method="POST">
+    <button type="submit" class="btn btn-dark stretched-link" name="kindOfProduct" value="<%=product.title%>">
+        View Product<i class="px-2 fas fa-long-arrow-alt-right"></i>
+    </button>
+    </form>
+    
+  </div>
+</div>
+
+<% }); %> 
+
+           </div> <!-- flex-box  -->
+             </div> <!--container-->
+
+        </section>
+
+
+
+      <%- include("partials/footer");%>

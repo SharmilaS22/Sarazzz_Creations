@@ -1,0 +1,188 @@
+<%- include("partials/header"); %> 
+         
+        </section>
+        <section id="view-product" class="container-fluid px-1">
+            <div class="container-fluid pt-0">
+          <h2 class="my-4 text-center section-title" id="product-name"> <%= productSpec.title %> </h2>
+          <div class="underline"></div>
+                </div>
+
+                <div class="container-fluid">
+            <div class="row p-0">
+
+                <div class="col-md-6 border" style="padding: 10px;">
+                    <div class="container p-0 picture-container">
+
+                    <div id="image-slide" class="carousel slide" data-ride="carousel" data-interval="10000">
+
+  <!-- Indicators -->
+  <ul class="carousel-indicators">
+      <% for(var i=0; i<productSpec.images.length+productSpec.videos.length; i++){  %> 
+    <li data-target="#image-slide" data-slide-to="<%= i %> " class="active"></li>
+    <% } %>
+  </ul>
+
+  <!-- The slideshow -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="img-fluid" src="<%=productSpec.images[0]%>" alt="product">
+    </div>
+
+     <% for(var i =1; i < productSpec.images.length; i++){ %>
+    <div class="carousel-item">
+      <img class="img-fluid" src="<%=productSpec.images[i]%>" alt="product">
+    </div>
+    <% } %>
+
+    <% if(productSpec.length!==0) { %> 
+    <% for(var i =0; i < productSpec.videos.length; i++){ %>
+
+    <div class="carousel-item" style="height: auto">
+        <div class="embed-responsive embed-responsive-16by9">
+              <video class="embed-responsive-item" width="" height="300" autoplay loop muted playsinline>
+                    <source src="<%=productSpec.videos[i]%>" />
+              </video>
+        </div>
+    </div>
+
+    <% } %>
+    <% } %>
+    
+  </div>
+
+  <!-- Left and right controls -->
+  <% if(productSpec.images.length+productSpec.videos.length > 1){ %> 
+  <a class="carousel-control-prev" href="#image-slide" data-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </a>
+  <a class="carousel-control-next" href="#image-slide" data-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </a>
+  <% } %>
+
+</div>
+</div>
+
+                </div>
+
+                <div class="col-md-6 border">
+
+                    <!-- <h2 class="p-3">&#8377 <span></span></h2> -->
+
+                    <h5 class="my-3">About the product</h5>
+                    <div>
+                        <% productSpec.abouts.forEach( about => { %>
+                            <p><%= about %></p>
+                        <% }); %>
+                        
+                    </div>
+                    
+                </div>
+            
+            </div> <!--  Row -->
+
+                            </div><!-- container-fluid -->
+
+            <div class="my-5 d-flex justify-content-center">
+                <form action="/product" method="post">
+                 <button class="btn btn-dark shadow" type="submit" name="orderItem" value="<%=productSpec.title%>">
+                    Request an order<i class="px-2 fas fa-long-arrow-alt-right"></i>
+                </button>
+                 </form>
+            </div>
+            <div id="reviews" class="">
+
+                <div class="container-fluid pt-0">
+          <h4 class="my-4 text-center section-title" id="product-name">Customer Reviews</h4>
+          <div class="underline"></div>
+                </div>
+
+                <div class="container-fluid">
+                
+                <div class="d-flex flex-column justify-content-around">
+
+                    <!-- fixed-length-cards -->
+
+                    <% productSpec.reviews.forEach( a_review => {  %>
+     
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <p><%=a_review.review%></p>
+                        </div>
+                        <div class="card-footer bg-dark text-white py-0">
+                            <div class="row p-0">
+                                <div class="col-md-6">
+                                    <p id="time1"><%=a_review.time%></p>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <p><%=a_review.name%></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                     <% }); %>
+
+
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <p id="review1">Product received was awesome. Would definitely recommend to my friends.</p>
+                        </div>
+                        <div class="card-footer bg-dark text-white py-0">
+                            <div class="row p-0">
+                                <div class="col-md-6">
+                                    <p id="time1">2 days ago</p>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <p id="name1">Sharmila S</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- <div class="card mb-2">
+                        <div class="card-body">
+                            <p id="review1">Good quality. Satisfied with the service.</p>
+                        </div>
+                        <div class="card-footer bg-dark text-white py-0">
+                            <div class="row p-0">
+                                <div class="col-sm-6">
+                                    <p id="time1">1 month ago</p>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <p id="name1">Sujitha G S</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div> -->
+
+                </div>
+                </div>
+
+                 <div class="container-fluid pt-0">
+          <h4 class="my-4 text-center section-title" id="product-name">Write a Review</h4>
+          <div class="underline"></div>
+
+                    <form action="/product" method="post">
+                    
+                        <div class="form-group">
+                            <label for="rname">Name</label>
+                        <input type="text" class="form-control" name="reviewer" id="rname" placeholder="Enter name.."
+                        autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="rreview">Review</label>
+                            <textarea name="review" class="form-control" id="rreview" cols="30" rows="3" placeholder="Write the review..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark" name="orderItem1" value="<%=productSpec.title%>">Submit Review</button>
+                    
+                    </form>
+                </div>
+            </div>
+        </section>
+
+<%- include("partials/footer"); %> 

@@ -1,0 +1,81 @@
+<%- include("partials/header"); %> 
+
+      </section>
+
+      <section id="add" class="container my-5">
+        <form action="/add-product" method="post">
+          <div class="form-group">
+            <label for="pname">Name:</label>
+            <input
+              type="text"
+              name="prodTitle"
+              class="form-control"
+              id="pname"
+            />
+          </div>
+          <!-- <div class="form-group">
+            <label for="pcost">Price:</label>
+            <input
+              type="number"
+              name="prodPrice"
+              class="form-control"
+              id="pcost"
+            />
+          </div> -->
+          
+          <div class="py-2">
+          <div id="image-container" class="form-group">
+            <label for="pimage">Images:</label>
+            <input
+              type="text"
+              name="prodImage"
+              class="form-control image-class"
+              id="pimage" required
+            />
+          </div>
+          <div id="addImage" class="btn btn-outline-success rounded pb-1">Add another image +</div>
+          <div id="removeImage" class="btn btn-outline-danger rounded">Remove an image -</div>
+          <input type="number" class="image-count invisible" name="imageCount">
+          </div>
+
+          <div class="py-2">
+          <div id="video-container" class="form-group">
+            <label for="pvideo">Videos:</label>
+            <input
+              type="text"
+              name="prodVideo"
+              class="form-control video-class"
+              id="pvideo"
+            />
+          </div>
+          <div id="addVideo" class="btn btn-outline-success rounded pb-1">Add another Video +</div>
+          <div id="removeVideo" class="btn btn-outline-danger rounded">Remove a Video -</div>
+          <input type="number" class="video-count invisible" name="videoCount">
+          </div>
+
+          <div class="py-2">
+          <div id="about-container" class="form-group">
+            <label for="pabout">About:</label>
+            <input
+              type="text"
+              name="prodAbout"
+              class="form-control about-class"
+              id="pabout"
+            />
+          </div>
+          <div id="addAbout" class="btn btn-outline-success rounded pb-1">Add another Specification +</div>
+          <div id="removeAbout" class="btn btn-outline-danger rounded">Remove a Specification -</div>
+          <input type="number" class="about-count invisible" name="aboutCount">
+          </div>
+
+
+          <button class="my-3 btn btn-dark" type="submit">
+            Add Product
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
