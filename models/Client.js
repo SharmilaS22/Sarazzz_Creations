@@ -18,10 +18,7 @@ const clientSchema = new mongoose.Schema({
     required: true,
   },
   recommendedBy: String,
-  date: {
-    type: Date,
-    default: Date.now
-  }
+  date: String
 });
 
 module.exports = Client = mongoose.model("Client", clientSchema);

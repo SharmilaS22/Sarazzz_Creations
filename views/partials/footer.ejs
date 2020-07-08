@@ -13,10 +13,8 @@
               </div>
               <div class="col-md-8">
                 <p class="pb-2">Get a reminder for new products.</p>
-                <form class="form-group">
 
-
-
+                <form class="form-group" action="/subscribe" method="POST">
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
     <div class="input-group-text">
@@ -24,7 +22,7 @@
     </div>
   </div>
 
-  <input type="text" class="form-control" id="user-mail" placeholder="email">
+  <input type="text" class="form-control" id="user-mail" placeholder="email" name="subscriber">
   <div class="input-group-append">
     <button class="btn btn-outline-light" type="submit">Subscribe</button>
   </div>

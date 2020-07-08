@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const https = require("https");
 const date = require(__dirname + "/date.js");
 const bcrypt = require("bcrypt");
 const salt = 15;
@@ -14,7 +15,6 @@ const Product = require("./models/Product");
 const { Review } = require("./models/Review");
 const Admin = require("./models/Admin");
 const Client = require("./models/Client");
-
 
 //mongodb atlas connect
 const user = process.env.DB_USER;
@@ -50,38 +50,32 @@ app
       let count = product.images.length + product.videos.length;
       if (!err && product !== null) {
         res.render("product", { productSpec: product, count: count });
-      } else { 
+      } else {
         res.send(err);
       }
     });
   });
 
-app.post("/product", (req, res) => {
-  let reviewFor = req.body.orderItem1;
+app.post("/product/review", (req, res) => {
   let reviewPerson = req.body.reviewer;
-  if (reviewPerson !== undefined) {
-    const review1 = new Review({
-      name: reviewPerson,
-      review: req.body.review,
-      time: date.getToday(),
-    });
-    review1.save();
-    
-
-    Product.findOneAndUpdate(
-      { title: req.body.orderItem1 },
-      { $push: { reviews: review1 } },
-      (err, product) => {
-        if (!err) {
-          res.render("product", { productSpec: product });
-        }
+  const review1 = new Review({
+    name: reviewPerson,
+    review: req.body.review,
+    time: date.getToday(),
+  });
+  review1.save();
+  Product.findOneAndUpdate(
+    { title: req.body.orderItem1 },
+    { $push: { reviews: review1 } },
+    (err, product) => {
+      if (!err) {
+        res.render("product", { productSpec: product });
       }
-    );
-  } else {
-    Product.find({ title: reviewFor }, (err, product) => {
-      res.render("product", { productSpec: product });
-    });
-  }
+    }
+  );
+});
+app.post("/product/order", (req, res) => {
+  res.render("purchase", { productName: req.body.orderItem });
 });
 
 app.post("/add-product", (req, res) => {
@@ -143,7 +137,6 @@ app
     res.render("login_authorize");
   })
   .post((req, res) => {
-
     Admin.findOne({ username: req.body.username }, (err, found) => {
       if (err) {
         res.send(err);
@@ -161,7 +154,6 @@ app
     });
   });
 app.post("/purchase", (req, res) => {
-
   const client1 = new Client({
     name: req.body.custName,
     email: req.body.custEmail,
@@ -173,13 +165,55 @@ app.post("/purchase", (req, res) => {
 
   client1.save((err) => {
     if (!err) {
-      res.sendFile(__dirname + "/success.html");
+      res.render("results/success", {
+        text1: "Order placed successfully!",
+        text2: "Thank you for ordering our Product.",
+        text3: "You will be contacted shortly.",
+      });
     } else {
       console.log(err);
-      res.sendFile(__dirname + "/failure.html");
+      res.render("results/failure", {
+        text1: "Sorry! There was some problem in placing your order!",
+        text2: "Try again.",
+      });
     }
   });
+});
 
+app.post("/subscribe", (req, res) => {  
+  const data = {
+    members: [
+      {
+        email_address: req.body.subscriber,
+        status: "subscribed",
+      },
+    ],
+  };
+  const jsdata = JSON.stringify(data);
+  const url = "https://us19.api.mailchimp.com/3.0/lists/eb94ac5157";
+  const options = {
+    method: "POST",
+    auth: "vino:8b1c02b259f51dde645fbeb285fe1b7b-us19",
+  };
+  const request = https.request(url, options, (response) => {
+    if (response.statusCode === 200) {
+      res.render("results/success", {
+        text1: "Subscribed to Reminders for new Products",
+        text2: "Thank you for subscribing.",
+        text3: "You will receive emails when a new product's introduced."
+      });
+    } else {
+      res.render("results/failure", { 
+        text1: "Sorry! Some error has occured.",
+        text2: "Try again."
+      });
+    }
+    response.on("data", function (data) {
+      console.log(JSON.parse(data));
+    });
+  });
+  request.write(jsdata);
+  request.end();
 });
 
 app.listen(process.env.PORT || 3000, function () {
