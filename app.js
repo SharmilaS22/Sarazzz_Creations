@@ -74,7 +74,7 @@ app.post("/product/review", (req, res) => {
     }
   );
 });
-app.post("/product/order", (req, res) => {
+app.post("/order-product", (req, res) => {
   res.render("purchase", { productName: req.body.orderItem });
 });
 
