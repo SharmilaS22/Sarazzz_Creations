@@ -56,7 +56,7 @@ app
     });
   });
 
-app.post("/product/review", (req, res) => {
+app.post("/product-review", (req, res) => {
   let reviewPerson = req.body.reviewer;
   const review1 = new Review({
     name: reviewPerson,
