@@ -1,5 +1,5 @@
 # Sarazzz_Creations
-### A web application for Saraz Creations for their business.
+### A full stack web application for _Saraz Creations_ for their business.
 
 A single product e-commerce website for small business.
 
