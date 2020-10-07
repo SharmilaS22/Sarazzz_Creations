@@ -6,6 +6,22 @@ const https = require("https");
 const date = require(__dirname + "/date.js");
 const bcrypt = require("bcrypt");
 const salt = 15;
+
+const fs = require("fs");
+const path = require("path");
+
+const multer = require("multer");
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    // const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + Date.now());
+  },
+});
+const upload = multer({ storage: storage });
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: !0 }));
 app.use(express.static("public"));
@@ -15,6 +31,7 @@ const Product = require("./models/Product");
 const { Review } = require("./models/Review");
 const Admin = require("./models/Admin");
 const Client = require("./models/Client");
+const { Image } = require("./models/Image");
 
 //mongodb atlas connect
 const user = process.env.DB_USER;
@@ -78,23 +95,48 @@ app.post("/order-product", (req, res) => {
   res.render("purchase", { productName: req.body.orderItem });
 });
 
-app.post("/add-product", (req, res) => {
+app.post("/add-product", upload.array("productImageUpload", 10), (req, res) => {
   Product.findOne({ title: req.body.prodTitle }, (err, found) => {
     if (found) {
       res.send(
         "Title already exists, duplicates aren't allowed. Try giving different title."
       );
     } else {
+      console.log(req.files);
+
       const images = [];
       const videos = [];
       const abouts = [];
+      const imageuploads = [];
 
-      if (req.body.imageCount != 1) {
-        for (let i = 0; i < req.body.imageCount; i++) {
-          images.push(req.body.prodImage[i]);
+      req.files.forEach((file) => {
+        var image1 = new Image({
+          name: file.filename,
+          desc: file.originalname,
+          img: {
+            data: fs.readFileSync(
+              path.join(__dirname + "/uploads/" + file.filename)
+            ),
+            contentType: "image/png",
+          },
+        });
+        image1.save((err) => {
+          if (err) {
+            res.send(err);
+          }
+        });
+        imageuploads.push(image1);
+      });
+
+      prodImage = req.body.prodImage;
+      if (prodImage !== "") {
+        if (req.body.imageCount == 1) {
+          images.push(prodImage);
+        } else if (prodImage[0] !== "") {
+          for (let i = 0; i < req.body.imageCount; i++) {
+            images.push(prodImage[i]);
+          }
         }
-      } else {
-        images.push(req.body.prodImage);
       }
       if (req.body.aboutCount == 1) {
         abouts.push(req.body.prodAbout);
@@ -113,12 +155,13 @@ app.post("/add-product", (req, res) => {
           }
         }
       }
-
       const product1 = new Product({
         title: req.body.prodTitle,
         images: images,
         videos: videos,
         abouts: abouts,
+        youtubeID: req.body.prodVideoID,
+        imgmodel: imageuploads,
       });
       product1.save((err) => {
         if (!err) {
@@ -180,7 +223,7 @@ app.post("/purchase", (req, res) => {
   });
 });
 
-app.post("/subscribe", (req, res) => {  
+app.post("/subscribe", (req, res) => {
   const data = {
     members: [
       {
@@ -200,12 +243,12 @@ app.post("/subscribe", (req, res) => {
       res.render("results/success", {
         text1: "Subscribed to Reminders for new Products",
         text2: "Thank you for subscribing.",
-        text3: "You will receive emails when a new product's introduced."
+        text3: "You will receive emails when a new product's introduced.",
       });
     } else {
-      res.render("results/failure", { 
+      res.render("results/failure", {
         text1: "Sorry! Some error has occured.",
-        text2: "Try again."
+        text2: "Try again.",
       });
     }
     response.on("data", function (data) {

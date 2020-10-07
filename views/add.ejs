@@ -3,7 +3,7 @@
       </section>
 
       <section id="add" class="container my-5">
-        <form action="/add-product" method="post">
+        <form action="/add-product" method="post" enctype="multipart/form-data">
           <div class="form-group">
             <label for="pname">Name:</label>
             <input
@@ -22,15 +22,33 @@
               id="pcost"
             />
           </div> -->
-          
+
+          <div class="py-3">
+          <div id="image-upload-container" class="form-group">
+            <div class="custom-file">
+            <input 
+             type="file" 
+             class="py-1 custom-file-input image-upload-class" 
+             name="productImageUpload" 
+             id="customFile0"
+             required
+            />
+            <label class="custom-file-label" for="customFile0">Choose image</label>
+          </div>
+          </div>
+          <div id="addImageUpload" class="btn btn-outline-success rounded pb-1">Add another image +</div>
+          <div id="removeImageUpload" class="btn btn-outline-danger rounded">Remove an image -</div>
+          <input type="number" class="image-upload-count invisible" name="imageUploadCount">
+          </div>
+
           <div class="py-2">
           <div id="image-container" class="form-group">
-            <label for="pimage">Images:</label>
+            <label for="pimage">Image Link (if any):</label>
             <input
               type="text"
               name="prodImage"
               class="form-control image-class"
-              id="pimage" required
+              id="pimage"
             />
           </div>
           <div id="addImage" class="btn btn-outline-success rounded pb-1">Add another image +</div>
@@ -38,9 +56,9 @@
           <input type="number" class="image-count invisible" name="imageCount">
           </div>
 
-          <div class="py-2">
+          <div class="py-3">
           <div id="video-container" class="form-group">
-            <label for="pvideo">Videos:</label>
+            <label for="pvideo">Videos: (optional)</label>
             <input
               type="text"
               name="prodVideo"
@@ -51,6 +69,18 @@
           <div id="addVideo" class="btn btn-outline-success rounded pb-1">Add another Video +</div>
           <div id="removeVideo" class="btn btn-outline-danger rounded">Remove a Video -</div>
           <input type="number" class="video-count invisible" name="videoCount">
+          </div>
+
+          <div class="py-3">
+          <div id="" class="form-group">
+            <label for="p_u_video">Youtube video ID: (optional) </label>
+            <input
+              type="text"
+              name="prodVideoID"
+              class="form-control"
+              id="p_u_video"
+            />
+          </div>
           </div>
 
           <div class="py-2">
@@ -68,7 +98,6 @@
           <input type="number" class="about-count invisible" name="aboutCount">
           </div>
 
-
           <button class="my-3 btn btn-dark" type="submit">
             Add Product
           </button>
@@ -77,5 +106,12 @@
     </div>
 
     <script src="index.js"></script>
+    <script>
+//Name of the file display 
+$(".custom-file-input").on("change", function() {
+  var fileName = $(this).val().split("\\").pop();
+  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+</script>
   </body>
 </html>
