@@ -72,10 +72,10 @@ Photo by Sarah Dorweiler on Unsplash
   <div class="card rounded-lg review m-2" style="width:400px">
   <div class="img-hover-zoom">
          <% if ( product.imgmodel && product.imgmodel.length !== 0 ) { %>  
-        <img src="data:image/<%= product.imgmodel[0].img.contentType  %>;base64,<%=product.imgmodel[0].img.data.toString('base64')%> "/>
-      <% } else { %> <!-- delete the following after altering existing ones  -->
-        <img class="card-img-top post-image" src="<%=product.images[0]%> " alt="image">
-      <% } %> 
+             <img class="card-img-top post-image" src="data:image/<%= product.imgmodel[0].img.contentType  %>;base64,<%=product.imgmodel[0].img.data.toString('base64')%> "/>
+         <% } else { %> <!-- delete the following after altering existing ones  -->
+            <img class="card-img-top post-image" src="<%=product.images[0]%> " alt="image">
+         <% } %> 
     </div>
   <!-- <div class="card-img-overlay">
       <i class="far fa-heart fa-2x" style="color: var(--pink);"></i>

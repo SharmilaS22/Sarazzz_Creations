@@ -102,7 +102,7 @@ app.post("/add-product", upload.array("productImageUpload", 10), (req, res) => {
         "Title already exists, duplicates aren't allowed. Try giving different title."
       );
     } else {
-      console.log(req.files);
+      // console.log(req.files);
 
       const images = [];
       const videos = [];
@@ -236,7 +236,7 @@ app.post("/subscribe", (req, res) => {
   const url = "https://us19.api.mailchimp.com/3.0/lists/eb94ac5157";
   const options = {
     method: "POST",
-    auth: "vino:8b1c02b259f51dde645fbeb285fe1b7b-us19",
+    auth: process.env.MAILCHIMPAUTH,
   };
   const request = https.request(url, options, (response) => {
     if (response.statusCode === 200) {

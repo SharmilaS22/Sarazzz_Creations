@@ -67,7 +67,7 @@ $(document).ready(function () {
     });
   });
   $("#removeImageUpload").on("click", function () {
-    $(".image-upload-class")[i_u_count].remove();
+    $(".custom-file")[i_u_count].remove();
     i_u_count = i_u_count - 1;
     $(".image-upload-count").val(i_u_count + 1);
   });
